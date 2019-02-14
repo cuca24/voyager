@@ -47,7 +47,10 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(VoyagerDummyServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
-        $this->app->register(DoctrineSupportServiceProvider::class);
+
+        if(env('APP_ENV') !== 'testing') {
+            $this->app->register(DoctrineSupportServiceProvider::class);
+        }
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
@@ -103,7 +106,10 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
-        $this->registerGates();
+        if(env('APP_ENV') !== 'testing') {
+            $this->registerGates();
+        }
+
 
         $this->registerViewComposers();
 
